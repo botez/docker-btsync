@@ -27,4 +27,5 @@ Folder to be synced via BitTorrent Sync.  (i.e. /opt/downloads/btsync or /media/
 ## Docker run command:
 
 ```
-docker run -d --net=host -v /*your_config_location*:/config  -v /*your_downloads_location*:/downloads -v /*your_temp_location:/temp --name=sabnzbd hurricane/docker-sabnzbd
+docker run -d --net=host -v /*your_config_location*:/config  -v /*your_sync_folder_location*:/sync --name=btsync hurricane/docker-btsync
+```
