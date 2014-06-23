@@ -21,11 +21,11 @@ Configuration, state files for BitTorrent Sync. (i.e. /opt/appdata/btsync)
 
 #### `/btsync`
 
-Folder to be synced via BitTorrent Sync.  (i.e. /opt/downloads/btsync or /media/Tower/btsync)
+Folder to be synced via BitTorrent Sync.  (i.e. /opt/downloads/btsync or /media/Tower/btsync or /mnt/user/btsync)
 
 
 ## Docker run command:
 
 ```
-docker run -d --net=host -v /*your_config_location*:/config  -v /*your_sync_folder_location*:/sync --name=btsync hurricane/docker-btsync
+docker run -d --net=host -v /*your_config_location*:/config  -v /*your_sync_folder_location*:/sync -v /etc/localtime:/etc/localtime:ro --name=btsync hurricane/docker-btsync
 ```
