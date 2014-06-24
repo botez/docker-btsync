@@ -2,7 +2,7 @@
 FROM ubuntu:trusty
 MAINTAINER Carlos Hernandez <carlos@techbyte.ca>
 
-# Noninteractive
+# Let the container know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
 # Set user nobody to uid and gid of unRAID
