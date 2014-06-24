@@ -22,12 +22,13 @@ RUN apt-mark hold initscripts udev plymouth mountall
 RUN apt-get -qy --force-yes dist-upgrade
 
 ADD http://download-lb.utorrent.com/endpoint/btsync/os/linux-glibc23-x64/track/stable /btsync.tar.gz
-RUN mkdir btsync && mkdir sync && tar xvzf /btsync.tar.gz -C /btsync && rm /btsync.tar.gz
-RUN chown -R nobody:users /btsync && chown -R nobody:users /sync
+RUN mkdir btsync && mkdir sync && mkdir /config && tar xvzf /btsync.tar.gz -C /btsync && rm /btsync.tar.gz
+RUN chown -R nobody:users /btsync && chown -R nobody:users /sync && chown -R nobody:users /config
 
 
 ADD start.sh /start.sh
 ADD btsync.conf /btsync.conf
+RUN chown nobody:users /btsync.conf
 
 VOLUME ["/config"]
 VOLUME ["/sync"]
