@@ -8,4 +8,4 @@ if [ ! -f /config/btsync.conf ]; then
   cp /btsync.conf /config/btsync.conf
 fi
 
-/btsync/btsync --nodaemon --config /config/btsync.conf
+btsync --nodaemon --config /config/btsync.conf
