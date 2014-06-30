@@ -1,40 +1,29 @@
 # Builds a docker image for btsync
-FROM ubuntu:trusty
-MAINTAINER Carlos Hernandez <carlos@techbyte.ca>
-
-# Let the container know that there is no tty
+FROM phusion/baseimage:0.9.11
+MAINTAINER botez <troyolson1@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
-# Set user nobody to uid and gid of unRAID
+# Set correct environment variables
+ENV HOME /root
+
+# Use baseimage-docker's init system
+CMD ["/sbin/my_init"]
+
+# Fix a Debianism of the nobody's uid being 65534
 RUN usermod -u 99 nobody
 RUN usermod -g 100 nobody
 
-# Set locale
-ENV LANGUAGE en_US.UTF-8
-ENV LANG en_US.UTF-8
-RUN locale-gen en_US en_US.UTF-8
-RUN update-locale LANG=en_US.UTF-8
-RUN dpkg-reconfigure locales
+RUN apt-get update -q
 
-# Update Ubuntu
-RUN apt-get -q update
-RUN apt-mark hold initscripts udev plymouth mountall
-RUN apt-get -qy --force-yes dist-upgrade
+# install dependencies for madsonic
+RUN apt-get install -qy curl
+RUN apt-get clean
 
-ADD http://download-lb.utorrent.com/endpoint/btsync/os/linux-glibc23-x64/track/stable /btsync.tar.gz
-RUN mkdir btsync && mkdir sync && mkdir /config && tar xvzf /btsync.tar.gz -C /btsync && rm /btsync.tar.gz
-RUN chown -R nobody:users /btsync && chown -R nobody:users /sync && chown -R nobody:users /config
+RUN curl -o /usr/bin/btsync.tar.gz http://download-lb.utorrent.com/endpoint/btsync/os/linux-x64/track/stable
+RUN cd /usr/bin && tar -xzvf btsync.tar.gz && rm btsync.tar.gz
+RUN mkdir -p /btsync/.sync
 
-
-ADD start.sh /start.sh
-ADD btsync.conf /btsync.conf
-RUN chown nobody:users /btsync.conf
-
-VOLUME ["/config"]
-VOLUME ["/sync"]
-EXPOSE 3369
-EXPOSE 3369/udp
 EXPOSE 8888
+EXPOSE 55555
 
-USER nobody
-CMD ["/start.sh"]
+VOLUME /config
