@@ -23,7 +23,13 @@ RUN curl -o /usr/bin/btsync.tar.gz http://download-lb.utorrent.com/endpoint/btsy
 RUN cd /usr/bin && tar -xzvf btsync.tar.gz && rm btsync.tar.gz
 RUN mkdir -p /btsync/.sync
 
+ADD btsync.conf /btsync.conf
+
 EXPOSE 8888
 EXPOSE 55555
 
 VOLUME /config
+
+RUN mkdir /etc/service/btsync
+ADD btsync.sh /etc/service/btsync/run
+RUN chmod +x /etc/service/btsync/run
